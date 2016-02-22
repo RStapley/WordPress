@@ -266,7 +266,7 @@ class wpdb {
 	 * @var array
 	 */
 	var $tables = array( 'posts', 'comments', 'links', 'options', 'postmeta',
-		'terms', 'term_taxonomy', 'term_relationships', 'commentmeta' );
+		'terms', 'term_taxonomy', 'term_relationships', 'commentmeta', 'users_vote' );
 
 	/**
 	 * List of deprecated WordPress tables
@@ -309,6 +309,15 @@ class wpdb {
 	 * @var string
 	 */
 	public $comments;
+	
+	/**
+	 * WordPress Votes table
+	 *
+	 * @since 1.5.0
+	 * @access public
+	 * @var string
+	 */
+	public $users_vote;
 
 	/**
 	 * WordPress Comment Metadata table

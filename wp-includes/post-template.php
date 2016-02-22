@@ -311,6 +311,17 @@ function get_the_content( $more_link_text = null, $strip_teaser = false ) {
 	return $output;
 }
 
+function the_vote()
+{
+	return get_the_vote();
+}
+
+function get_the_vote()
+{
+	$post = get_post();
+	return ! empty( $post ) ? $post->vote : null;
+}
+
 /**
  * Preview fix for JavaScript bug with foreign languages.
  *
