@@ -30,12 +30,21 @@ class WP_Scripts extends WP_Dependencies {
 	public $ext_version = '';
 	public $default_dirs;
 
+	/**
+	 * Constructor.
+	 *
+	 * @since 2.6.0
+	 * @access public
+	 */
 	public function __construct() {
 		$this->init();
 		add_action( 'init', array( $this, 'init' ), 0 );
 	}
 
 	/**
+	 * Initialize the class.
+	 *
+	 * @since 3.4.0
 	 * @access public
 	 */
 	public function init() {
@@ -168,6 +177,11 @@ class WP_Scripts extends WP_Dependencies {
 			echo $cond_after;
 		}
 
+		// A single item may alias a set of items, by having dependencies, but no source.
+		if ( ! $obj->src ) {
+			return true;
+		}
+
 		if ( ! preg_match( '|^(https?:)?//|', $src ) && ! ( $this->content_url && 0 === strpos( $src, $this->content_url ) ) ) {
 			$src = $this->base_url . $src;
 		}
@@ -247,7 +261,7 @@ class WP_Scripts extends WP_Dependencies {
 	 * @return bool Not already in the group or a lower group
 	 */
 	public function set_group( $handle, $recursion, $group = false ) {
-		if ( $this->registered[$handle]->args === 1 )
+		if ( isset( $this->registered[$handle]->args ) && $this->registered[$handle]->args === 1 )
 			$grp = 1;
 		else
 			$grp = (int) $this->get_data( $handle, 'group' );

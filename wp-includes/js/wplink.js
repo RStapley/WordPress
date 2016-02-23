@@ -219,14 +219,20 @@ var wpLink;
 		},
 
 		mceRefresh: function() {
-			var text,
+			var text, url,
 				selectedNode = editor.selection.getNode(),
 				linkNode = editor.dom.getParent( selectedNode, 'a[href]' ),
 				onlyText = this.hasSelectedText( linkNode );
 
 			if ( linkNode ) {
 				text = linkNode.innerText || linkNode.textContent;
-				inputs.url.val( editor.dom.getAttrib( linkNode, 'href' ) );
+				url = editor.dom.getAttrib( linkNode, 'href' );
+
+				if ( url === '_wp_link_placeholder' ) {
+					url = '';
+				}
+
+				inputs.url.val( url );
 				inputs.openInNewTab.prop( 'checked', '_blank' === editor.dom.getAttrib( linkNode, 'target' ) );
 				inputs.submit.val( wpLinkL10n.update );
 			} else {
@@ -244,6 +250,8 @@ var wpLink;
 		},
 
 		close: function() {
+			var linkNode;
+			
 			$( document.body ).removeClass( 'modal-open' );
 
 			if ( ! wpLink.isMCE() ) {
@@ -254,6 +262,12 @@ var wpLink;
 					wpLink.range.select();
 				}
 			} else {
+				linkNode = editor.dom.getParent( editor.selection.getNode(), 'a[href]' );
+
+				if ( linkNode && editor.dom.getAttrib( linkNode, 'href' ) === '_wp_link_placeholder' ) {
+					editor.dom.remove( linkNode, true );
+				}
+
 				editor.focus();
 			}
 
@@ -352,7 +366,6 @@ var wpLink;
 			var attrs = wpLink.getAttrs(),
 				link, text;
 
-			wpLink.close();
 			editor.focus();
 
 			if ( tinymce.isIE ) {
@@ -382,12 +395,13 @@ var wpLink;
 				editor.dom.setAttribs( link, attrs );
 			} else {
 				if ( text ) {
-					editor.selection.setNode( editor.dom.create( 'a', attrs, text ) );
+					editor.selection.setNode( editor.dom.create( 'a', attrs, editor.dom.encode( text ) ) );
 				} else {
 					editor.execCommand( 'mceInsertLink', false, attrs );
 				}
 			}
 
+			wpLink.close();
 			editor.nodeChanged();
 		},
 
@@ -459,13 +473,14 @@ var wpLink;
 		},
 
 		keydown: function( event ) {
-			var fn, id,
-				key = $.ui.keyCode;
+			var fn, id;
 
-			if ( key.ESCAPE === event.keyCode ) {
+			// Escape key.
+			if ( 27 === event.keyCode ) {
 				wpLink.close();
 				event.stopImmediatePropagation();
-			} else if ( key.TAB === event.keyCode ) {
+			// Tab key.
+			} else if ( 9 === event.keyCode ) {
 				id = event.target.id;
 
 				// wp-link-submit must always be the last focusable element in the dialog.
@@ -479,7 +494,8 @@ var wpLink;
 				}
 			}
 
-			if ( event.keyCode !== key.UP && event.keyCode !== key.DOWN ) {
+			// Up Arrow and Down Arrow keys.
+			if ( 38 !== event.keyCode && 40 !== event.keyCode ) {
 				return;
 			}
 
@@ -488,7 +504,8 @@ var wpLink;
 				return;
 			}
 
-			fn = event.keyCode === key.UP ? 'prev' : 'next';
+			// Up Arrow key.
+			fn = 38 === event.keyCode ? 'prev' : 'next';
 			clearInterval( wpLink.keyInterval );
 			wpLink[ fn ]();
 			wpLink.keyInterval = setInterval( wpLink[ fn ], wpLink.keySensitivity );
@@ -496,9 +513,8 @@ var wpLink;
 		},
 
 		keyup: function( event ) {
-			var key = $.ui.keyCode;
-
-			if ( event.which === key.UP || event.which === key.DOWN ) {
+			// Up Arrow and Down Arrow keys.
+			if ( 38 === event.keyCode || 40 === event.keyCode ) {
 				clearInterval( wpLink.keyInterval );
 				event.preventDefault();
 			}
