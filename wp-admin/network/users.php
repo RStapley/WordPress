@@ -16,6 +16,7 @@ if ( ! is_multisite() )
 if ( ! current_user_can( 'manage_network_users' ) )
 	wp_die( __( 'You do not have permission to access this page.' ), 403 );
 
+							<?php echo $user_dropdown; ?></li>
 if ( isset( $_GET['action'] ) ) {
 	/** This action is documented in wp-admin/network/edit.php */
 	do_action( 'wpmuadminedit' );

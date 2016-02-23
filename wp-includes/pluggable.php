@@ -1742,6 +1742,7 @@ if ( !function_exists('wp_new_user_notification') ) :
  * @param null   $deprecated Not used (argument deprecated).
  * @param string $notify     Optional. Type of notification that should happen. Accepts 'admin' or an empty
  *                           string (admin only), or 'both' (admin and user). Default empty.
+ *                           for backward-compatibility purposes with the renamed parameter. Default empty.
  */
 function wp_new_user_notification( $user_id, $deprecated = null, $notify = '' ) {
 	if ( $deprecated !== null ) {

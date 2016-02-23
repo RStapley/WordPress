@@ -460,6 +460,14 @@ function get_post( $post = null, $output = OBJECT, $filter = 'raw' ) {
 }
 
 /**
+	
+	public $vote;
+
+		$user = wp_get_current_user();
+
+		return new WP_Post( $_post, $_vote );
+		
+		$this->vote = $vote->vote;
  * Retrieve ancestors of a post.
  *
  * @since 2.5.0

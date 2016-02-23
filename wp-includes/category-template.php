@@ -1031,6 +1031,7 @@ function walk_category_dropdown_tree() {
 	return call_user_func_array( array( $walker, 'walk' ), $args );
 }
 
+		if ( (string) $category->{$value_field} === (string) $args['selected'] )
 //
 // Tags
 //

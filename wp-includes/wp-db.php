@@ -309,6 +309,15 @@ class wpdb {
 	 * @var string
 	 */
 	public $comments;
+	
+	/**
+	 * WordPress Votes table
+	 *
+	 * @since 1.5.0
+	 * @access public
+	 * @var string
+	 */
+	public $users_vote;
 
 	/**
 	 * WordPress Comment Metadata table

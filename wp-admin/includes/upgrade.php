@@ -1625,6 +1625,20 @@ function upgrade_430_fix_comments() {
 /**
  * Executes changes made in WordPress 4.3.1.
  *
+ * @since 4.3.1
+ */
+function upgrade_431() {
+	// Fix incorrect cron entries for term splitting
+	$cron_array = _get_cron_array();
+	if ( isset( $cron_array['wp_batch_split_terms'] ) ) {
+		unset( $cron_array['wp_batch_split_terms'] );
+		_set_cron_array( $cron_array );
+	}
+}
+
+/**
+ * Executes changes made in WordPress 4.3.1.
+ *
  * @ignore
  * @since 4.3.1
  */
