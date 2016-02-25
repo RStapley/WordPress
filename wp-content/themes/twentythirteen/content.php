@@ -55,6 +55,28 @@
 			<div class="comments-link">
 				<?php comments_popup_link( '<span class="leave-reply">' . __( 'Leave a comment', 'twentythirteen' ) . '</span>', __( 'One comment so far', 'twentythirteen' ), __( 'View all % comments', 'twentythirteen' ) ); ?>
 			</div><!-- .comments-link -->
+			<?php if(is_user_logged_in()) : ?>
+					<?php if(the_vote() == 0 ) : ?>
+					<form action="<?php echo site_url(); ?>/wp-cast-vote.php" method="post" id="voteYes">
+						
+						<input type="hidden" name="postId" value="<?php echo $id; ?>" />
+						<input type="hidden" name="value" value="1" />
+						
+						<input type="submit" value="yes">
+					</form>
+					<form action="<?php echo site_url(); ?>/wp-cast-vote.php" method="post" id="voteNo">
+						
+						<input type="hidden" name="postId" value="<?php echo $id; ?>" />
+						<input type="hidden" name="value" value="-1" />
+						
+						<input type="submit" value="no">
+					</form>
+					<?php elseif(the_vote() == 1) : ?>
+						<span>YEAH</span>
+					<?php else : ?>
+						<span>NOPE</span>
+					<?php endif; ?>
+				<?php endif; ?>
 		<?php endif; // comments_open() ?>
 
 		<?php if ( is_single() && get_the_author_meta( 'description' ) && is_multi_author() ) : ?>
