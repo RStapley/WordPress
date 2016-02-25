@@ -193,6 +193,7 @@ require( ABSPATH . WPINC . '/rest-api.php' );
 require( ABSPATH . WPINC . '/rest-api/class-wp-rest-server.php' );
 require( ABSPATH . WPINC . '/rest-api/class-wp-rest-response.php' );
 require( ABSPATH . WPINC . '/rest-api/class-wp-rest-request.php' );
+require( ABSPATH . WPINC . '/vote.php' );
 
 // Load multisite-specific files.
 if ( is_multisite() ) {

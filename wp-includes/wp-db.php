@@ -266,7 +266,7 @@ class wpdb {
 	 * @var array
 	 */
 	var $tables = array( 'posts', 'comments', 'links', 'options', 'postmeta',
-		'terms', 'term_taxonomy', 'term_relationships', 'termmeta', 'commentmeta' );
+		'terms', 'term_taxonomy', 'term_relationships', 'termmeta', 'commentmeta', 'user_post_vote' );
 
 	/**
 	 * List of deprecated WordPress tables
@@ -475,6 +475,15 @@ class wpdb {
 	 * @var string
 	 */
 	public $sitemeta;
+	
+	/**
+	 * WordPress Votes table
+	 *
+	 * @since x.x.x
+	 * @access public
+	 * @var string
+	 */
+	public $users_post_vote;
 
 	/**
 	 * Format specifiers for DB columns. Columns not listed here default to %s. Initialized during WP load.

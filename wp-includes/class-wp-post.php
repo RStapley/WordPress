@@ -195,6 +195,8 @@ final class WP_Post {
 	 * @var string
 	 */
 	public $filter;
+	
+	public $vote;
 
 	/**
 	 * Retrieve WP_Post instance.
@@ -215,6 +217,7 @@ final class WP_Post {
 			return false;
 
 		$_post = wp_cache_get( $post_id, 'posts' );
+		$user = wp_get_current_user();
 
 		if ( ! $_post ) {
 			$_post = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE ID = %d LIMIT 1", $post_id ) );
@@ -228,7 +231,9 @@ final class WP_Post {
 			$_post = sanitize_post( $_post, 'raw' );
 		}
 
-		return new WP_Post( $_post );
+		$_vote = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->user_post_vote WHERE post = %d and user = %d LIMIT 1", $post_id, $user->ID ) );
+		
+		return new WP_Post( $_post, $_vote );
 	}
 
 	/**
@@ -236,9 +241,11 @@ final class WP_Post {
 	 *
 	 * @param WP_Post|object $post Post object.
 	 */
-	public function __construct( $post ) {
+	public function __construct( $post, $vote ) {
 		foreach ( get_object_vars( $post ) as $key => $value )
 			$this->$key = $value;
+		
+		$this->vote = $vote->vote;
 	}
 
 	/**

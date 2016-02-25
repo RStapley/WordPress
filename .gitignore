@@ -1,0 +1,4 @@
+*.project
+wp-content/plugins/
+.buildpath
+wp-config.php
